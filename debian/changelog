@@ -1,0 +1,46 @@
+binutils (2.31.1-16.lnd.vec.27) unstable; urgency=medium
+
+  * １支持原子指令。２.支持浮点加速指令。
+
+ -- Loongson <service@loongnix.cn>  Thu, 01 Jun 2023 12:04:43 +0800
+
+binutils (2.31.1-16.lnd.vec.26) unstable; urgency=medium
+
+  * binutils-vec--2.31-for-2.31.1-16.lnd.vec.26
+  * ld: add ifunc support
+  * ld: Fix the bug of pr21964-4
+  * ld: change loong64 to loongarch64
+  * ld: Delete R_LARCH_NONE relocation of eh_frame
+  * gas: Delete auto generate files in gas
+  * binutils: Delete warning of compile
+
+ -- loongson <service@loongnix.cn>  Wed, 24 May 2023 16:21:45 +0800
+
+binutils (2.31.1-16.lnd.vec.25) unstable; urgency=medium
+
+  * binutils-vec: 2.31.1 for 2.31.1-16.lnd.vec.25
+
+ -- mengqinggang <mengqinggang@loongson.cn>  Mon, 16 May 2022 13:06:33 +0800
+
+binutils (2.31.1-16.lnd.vec.24) unstable; urgency=medium
+
+  * binutils-vec: 2.31.1 for 2.31.1-16.lnd.vec.24
+  * Fix wrong line number in .debug_line
+  * 0001-Fix-wrong-line-number-in-.debug_line.patch
+
+ -- mengqinggang <mengqinggang@loongson.cn>  Fri, 01 Apr 2022 17:49:21 +0800
+
+binutils (2.31.1-16.lnd.vec.23) unstable; urgency=medium
+
+  * binutils-vec: 2.31.1 for 2.31.1-16.lnd.vec.23
+  * 0001-Fix-gas-bug.patch
+  * LA-binutils-test-result.wps
+
+ --  <jenkins@loongson.cn>  Thu, 20 Jan 2022 16:01:47 +0800
+
+binutils (2.31.1-16.lnd.vec.22) unstable; urgency=medium
+
+  * init binuitls
+
+ -- mengqinggang <mengqinggang@loongson.cn>  Wed, 08 Dec 2021 09:56:56 +0800
+
