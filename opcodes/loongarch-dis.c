@@ -2,6 +2,7 @@
 #include "disassemble.h"
 #include "opintl.h"
 #include "opcode/loongarch.h"
+#include "libiberty.h"
 #include <stdlib.h>
 
 static const struct loongarch_opcode *
@@ -78,7 +79,8 @@ parse_loongarch_dis_options (const char *opts_in)
   if (opts_in == NULL)
     return 0;
 
-  char opts[strlen (opts_in) + 1], *opt, *opt_end;
+  char *opts, *opt, *opt_end;
+  opts = xmalloc (strlen (opts_in) + 1);
   strcpy (opts, opts_in);
 
   for (opt = opt_end = opts; opt_end != NULL; opt = opt_end + 1)
@@ -88,6 +90,7 @@ parse_loongarch_dis_options (const char *opts_in)
       if (parse_loongarch_dis_option (opt) != 0)
 	return -1;
     }
+  free (opts);
   return 0;
 }
 
@@ -215,13 +218,14 @@ disassemble_one (insn_t insn, struct disassemble_info *info)
   info->fprintf_func (info->stream, "%s", opc->name);
 
   {
-    char fake_args[strlen (opc->format) + 1];
+    char *fake_args = xmalloc (strlen (opc->format) + 1);
     const char *fake_arg_strs[MAX_ARG_NUM_PLUS_2];
     strcpy (fake_args, opc->format);
     if (0 < loongarch_split_args_by_comma (fake_args, fake_arg_strs))
       info->fprintf_func (info->stream, "\t");
     info->private_data = &insn;
     loongarch_foreach_args (opc->format, fake_arg_strs, dis_one_arg, info);
+    free (fake_args);
   }
 
   if (info->insn_type == dis_branch || info->insn_type == dis_condbranch

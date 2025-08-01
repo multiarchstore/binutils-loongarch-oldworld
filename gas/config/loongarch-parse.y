@@ -1,7 +1,7 @@
 %{
 #include "as.h"
 #include "loongarch-parse.h"
-void yyerror(const char *s) {}
+static void yyerror(const char *s ATTRIBUTE_UNUSED) {}
 extern int yylex (void);
 extern void yy_scan_string (const char *);
 extern void
@@ -25,6 +25,12 @@ is_const (struct reloc_info *info)
 	 && info->value.X_op == O_constant;
 }
 
+int
+loongarch_parse_expr (const char *expr,
+		      struct reloc_info *reloc_stack_top,
+		      size_t max_reloc_num,
+		      size_t *reloc_num,
+		      offsetT *imm);
 int
 loongarch_parse_expr (const char *expr,
 		      struct reloc_info *reloc_stack_top,
@@ -178,6 +184,7 @@ emit_unary (char op)
 	{
 	case '!':
 	  top->type = BFD_RELOC_LARCH_SOP_NOT;
+	  break;
 	default:
 	  abort ();
 	}

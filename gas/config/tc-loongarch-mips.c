@@ -727,7 +727,7 @@ loongarch_converte_one_mips (char *str)
       char *branch_stub_buf;
 
       {
-	char dupped_b_format[strlen (b->format) + 1];
+	char *dupped_b_format = xmalloc(strlen (b->format) + 1);
 	const char *b_format_strs[MAX_ARG_NUM_PLUS_2];
 	int64_t b_arg_value[MAX_ARG_NUM_PLUS_2];
 	size_t i, j;
@@ -736,6 +736,7 @@ loongarch_converte_one_mips (char *str)
 
 	strcpy (dupped_b_format, b->format);
 	loongarch_split_args_by_comma (dupped_b_format, b_format_strs);
+	free(dupped_b_format);
 
 	do
 	  {

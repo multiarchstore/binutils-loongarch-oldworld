@@ -320,32 +320,6 @@ my_getExpression (expressionS *ep, const char *str)
   return ret;
 }
 
-
-/* for compitable with MIPS pesudo insn like '.set reorder'
-   but actually ignore them. */
-static void
-s_loongarch_set (int x ATTRIBUTE_UNUSED)
-{
-  char *name = input_line_pointer, ch;
-
-  while (!is_end_of_line[(unsigned char) *input_line_pointer])
-    ++input_line_pointer;
-  ch = *input_line_pointer;
-  *input_line_pointer = '\0';
-
-  if (strchr (name, ','))
-    {
-      /* Generic ".set" directive; use the generic handler.  */
-      *input_line_pointer = ch;
-      input_line_pointer = name;
-      s_set (0);
-      return;
-    }
-
-  *input_line_pointer = ch;
-  demand_empty_rest_of_line ();
-}
-
 static void
 s_loongarch_align (int arg)
 {
@@ -470,7 +444,7 @@ extern int loongarch_parse_expr (const char *expr,
 				 size_t max_reloc_num, size_t *reloc_num,
 				 offsetT *imm_if_no_reloc);
 
-int
+static int
 is_internal_label (const char *c_str)
 {
   do
@@ -1084,6 +1058,7 @@ md_apply_fix (fixS *fixP, valueT *valP, segT seg ATTRIBUTE_UNUSED)
     case BFD_RELOC_LARCH_SOP_PUSH_TLS_GOT:
       if (fixP->fx_addsy)
 	S_SET_THREAD_LOCAL (fixP->fx_addsy);
+      /* Fall through.  */
     case BFD_RELOC_LARCH_SOP_PUSH_PCREL:
     case BFD_RELOC_LARCH_SOP_PUSH_PLT_PCREL:
       if (fixP->fx_addsy == NULL)
@@ -1214,9 +1189,6 @@ md_apply_fix (fixS *fixP, valueT *valP, segT seg ATTRIBUTE_UNUSED)
     case BFD_RELOC_32:
       if (fixP->fx_subsy)
 	{
-    case BFD_RELOC_24:
-    case BFD_RELOC_16:
-    case BFD_RELOC_8:
 	  fixP->fx_next = xmemdup (fixP, sizeof (*fixP), sizeof (*fixP));
 	  fixP->fx_next->fx_addsy = fixP->fx_subsy;
 	  fixP->fx_next->fx_subsy = NULL;
@@ -1233,18 +1205,6 @@ md_apply_fix (fixS *fixP, valueT *valP, segT seg ATTRIBUTE_UNUSED)
 	      fixP->fx_r_type = BFD_RELOC_LARCH_ADD32;
 	      fixP->fx_next->fx_r_type = BFD_RELOC_LARCH_SUB32;
 	      break;
-	    case BFD_RELOC_24:
-	      fixP->fx_r_type = BFD_RELOC_LARCH_ADD24;
-	      fixP->fx_next->fx_r_type = BFD_RELOC_LARCH_SUB24;
-	      break;
-	    case BFD_RELOC_16:
-	      fixP->fx_r_type = BFD_RELOC_LARCH_ADD16;
-	      fixP->fx_next->fx_r_type = BFD_RELOC_LARCH_SUB16;
-	      break;
-	    case BFD_RELOC_8:
-	      fixP->fx_r_type = BFD_RELOC_LARCH_ADD8;
-	      fixP->fx_next->fx_r_type = BFD_RELOC_LARCH_SUB8;
-	      break;
 	    default:
 	      break;
 	    }
@@ -1252,6 +1212,41 @@ md_apply_fix (fixS *fixP, valueT *valP, segT seg ATTRIBUTE_UNUSED)
 	  if (fixP->fx_next->fx_addsy == NULL)
 	    fixP->fx_next->fx_done = 1;
 	}
+      if (fixP->fx_addsy == NULL)
+	{
+	  fixP->fx_done = 1;
+	  md_number_to_chars (buf, *valP, fixP->fx_size);
+	}
+      break;
+
+    /* case BFD_RELOC_24: */
+    case BFD_RELOC_16:
+    case BFD_RELOC_8:
+      fixP->fx_next = xmemdup (fixP, sizeof (*fixP), sizeof (*fixP));
+      fixP->fx_next->fx_addsy = fixP->fx_subsy;
+      fixP->fx_next->fx_subsy = NULL;
+      fixP->fx_next->fx_offset = 0;
+      fixP->fx_subsy = NULL;
+    
+      switch (fixP->fx_r_type)
+        {
+        case BFD_RELOC_16:
+          fixP->fx_r_type = BFD_RELOC_LARCH_ADD16;
+          fixP->fx_next->fx_r_type = BFD_RELOC_LARCH_SUB16;
+          break;
+        case BFD_RELOC_8:
+          fixP->fx_r_type = BFD_RELOC_LARCH_ADD8;
+          fixP->fx_next->fx_r_type = BFD_RELOC_LARCH_SUB8;
+          break;
+        default:
+          break;
+        }
+
+      md_number_to_chars (buf, 0, fixP->fx_size);
+
+      if (fixP->fx_next->fx_addsy == NULL)
+        fixP->fx_next->fx_done = 1;
+
       if (fixP->fx_addsy == NULL)
 	{
 	  fixP->fx_done = 1;
@@ -1375,17 +1370,10 @@ loongarch_handle_align (fragS *fragp)
      and use zeroes otherwise.  */
   gas_assert (excess < 4);
   fragp->fr_fix += excess;
-  switch (excess)
-    {
-    case 3:
-      *p++ = '\0';
-    case 2:
-      *p++ = '\0';
-    case 1:
-      *p++ = '\0';
-    case 0:
-      break;
-    }
+
+
+  while (excess-- != 0)
+    *p++ = 0;
 
   md_number_to_chars (p, opcode, size);
   fragp->fr_var = size;

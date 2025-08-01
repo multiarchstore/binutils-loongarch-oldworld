@@ -2,6 +2,9 @@
 %{
 #include "as.h"
 #include "loongarch-parse.h"
+/* Flex generates static functions "input" & "unput" which are not used.  */
+#define YY_NO_INPUT
+#define YY_NO_UNPUT
 %}
 
 D	[0-9]

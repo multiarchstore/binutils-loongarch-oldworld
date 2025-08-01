@@ -259,6 +259,16 @@ static struct loongarch_opcode loongarch_macro_opcodes[] = {
 
 static struct loongarch_opcode loongarch_fix_opcodes[] = {
 /* match,    mask,       name, format, macro, include, exclude, pinfo */
+{0, 0, "sc.q", "r,r,r,u0:0", "sc.q %1,%2,%3", 0, 0, 0},
+{0x38570000, 0xffff8000, "sc.q", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "llacq.w", "r,r,u0:0", "llacq.w %1,%2", 0, 0, 0},
+{0x38578000, 0xfffffc00, "llacq.w", "r0:5,r5:5", 0, 0, 0, 0},
+{0, 0, "llacq.d", "r,r,u0:0", "llacq.d %1,%2", 0, 0, 0},
+{0x38578800, 0xfffffc00, "llacq.d", "r0:5,r5:5", 0, 0, 0, 0},
+{0, 0, "screl.w", "r,r,u0:0", "screl.w %1,%2", 0, 0, 0},
+{0x38578400, 0xfffffc00, "screl.w", "r0:5,r5:5", 0, 0, 0, 0},
+{0, 0, "screl.d", "r,r,u0:0", "screl.d %1,%2", 0, 0, 0},
+{0x38578c00, 0xfffffc00, "screl.d", "r0:5,r5:5", 0, 0, 0, 0},
 {0x00001000, 0xfffffc00, "clo.w", "r0:5,r5:5", 0, 0, 0, 0},
 {0x00001400, 0xfffffc00, "clz.w", "r0:5,r5:5", 0, 0, 0, 0},
 {0x00001800, 0xfffffc00, "cto.w", "r0:5,r5:5", 0, 0, 0, 0},
@@ -357,6 +367,10 @@ static struct loongarch_opcode loongarch_fix_opcodes[] = {
 
 static struct loongarch_opcode loongarch_float_opcodes[] = {
 /* match,    mask,       name, format, macro, include, exclude, pinfo */
+{0x01147400, 0xfffffc00, "frecipe.s", "f0:5,f5:5", 0, 0, 0, 0},
+{0x01147800, 0xfffffc00, "frecipe.d", "f0:5,f5:5", 0, 0, 0, 0},
+{0x01148400, 0xfffffc00, "frsqrte.s", "f0:5,f5:5", 0, 0, 0, 0},
+{0x01148800, 0xfffffc00, "frsqrte.d", "f0:5,f5:5", 0, 0, 0, 0},
 {0x01008000, 0xffff8000, "fadd.s", "f0:5,f5:5,f10:5", 0, 0, 0, 0},
 {0x01010000, 0xffff8000, "fadd.d", "f0:5,f5:5,f10:5", 0, 0, 0, 0},
 {0x01028000, 0xffff8000, "fsub.s", "f0:5,f5:5,f10:5", 0, 0, 0, 0},
@@ -725,6 +739,38 @@ static struct loongarch_opcode loongarch_load_store_opcodes[] = {
 {0x38440000, 0xffff8000, "vstx", "v0:5,r5:5,r10:5", 0, 0, 0, 0},
 {0x38480000, 0xffff8000, "xvldx", "x0:5,r5:5,r10:5", 0, 0, 0, 0},
 {0x384c0000, 0xffff8000, "xvstx", "x0:5,r5:5,r10:5", 0, 0, 0, 0},
+{0, 0, "amcas.b", "r,r,r,u0:0", "amcas.b %1,%2,%3", 0, 0, 0},
+{0x38580000, 0xffff8000, "amcas.b", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amcas.h", "r,r,r,u0:0", "amcas.h %1,%2,%3", 0, 0, 0},
+{0x38588000, 0xffff8000, "amcas.h", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amcas.w", "r,r,r,u0:0", "amcas.w %1,%2,%3", 0, 0, 0},
+{0x38590000, 0xffff8000, "amcas.w", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amcas.d", "r,r,r,u0:0", "amcas.d %1,%2,%3", 0, 0, 0},
+{0x38598000, 0xffff8000, "amcas.d", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amcas_db.b", "r,r,r,u0:0", "amcas_db.b %1,%2,%3", 0, 0, 0},
+{0x385a0000, 0xffff8000, "amcas_db.b", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amcas_db.h", "r,r,r,u0:0", "amcas_db.h %1,%2,%3", 0, 0, 0},
+{0x385a8000, 0xffff8000, "amcas_db.h", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amcas_db.w", "r,r,r,u0:0", "amcas_db.w %1,%2,%3", 0, 0, 0},
+{0x385b0000, 0xffff8000, "amcas_db.w", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amcas_db.d", "r,r,r,u0:0", "amcas_db.d %1,%2,%3", 0, 0, 0},
+{0x385b8000, 0xffff8000, "amcas_db.d", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amswap.b", "r,r,r,u0:0", "amswap.b %1,%2,%3", 0, 0, 0},
+{0x385c0000, 0xffff8000, "amswap.b", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amswap.h", "r,r,r,u0:0", "amswap.h %1,%2,%3", 0, 0, 0},
+{0x385c8000, 0xffff8000, "amswap.h", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amadd.b", "r,r,r,u0:0", "amadd.b %1,%2,%3", 0, 0, 0},
+{0x385d0000, 0xffff8000, "amadd.b", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amadd.h", "r,r,r,u0:0", "amadd.h %1,%2,%3", 0, 0, 0},
+{0x385d8000, 0xffff8000, "amadd.h", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amswap_db.b", "r,r,r,u0:0", "amswap_db.b %1,%2,%3", 0, 0, 0},
+{0x385e0000, 0xffff8000, "amswap_db.b", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amswap_db.h", "r,r,r,u0:0", "amswap_db.h %1,%2,%3", 0, 0, 0},
+{0x385e8000, 0xffff8000, "amswap_db.h", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amadd_db.b", "r,r,r,u0:0", "amadd_db.b %1,%2,%3", 0, 0, 0},
+{0x385f0000, 0xffff8000, "amadd_db.b", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
+{0, 0, "amadd_db.h", "r,r,r,u0:0", "amadd_db.h %1,%2,%3", 0, 0, 0},
+{0x385f8000, 0xffff8000, "amadd_db.h", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
 {0, 0, "amswap.w", "r,r,r,u0:0", "amswap.w %1,%2,%3", 0, 0, 0},
 {0x38600000, 0xffff8000, "amswap.w", "r0:5,r10:5,r5:5", 0, 0, 0, 0},
 {0, 0, "amswap.d", "r,r,r,u0:0", "amswap.d %1,%2,%3", 0, 0, 0},
@@ -875,6 +921,10 @@ static struct loongarch_opcode loongarch_jmp_opcodes[] = {
 
 static struct loongarch_opcode loongarch_128vec_opcodes[] = {
 /* match,    mask,       name, format, macro, include, exclude, pinfo */
+{0x729d1400, 0xfffffc00, "vfrecipe.s", "v0:5,v5:5", 0, 0, 0, 0},
+{0x729d1800, 0xfffffc00, "vfrecipe.d", "v0:5,v5:5", 0, 0, 0, 0},
+{0x729d2400, 0xfffffc00, "vfrsqrte.s", "v0:5,v5:5", 0, 0, 0, 0},
+{0x729d2800, 0xfffffc00, "vfrsqrte.d", "v0:5,v5:5", 0, 0, 0, 0},
 {0x70000000, 0xffff8000, "vseq.b", "v0:5,v5:5,v10:5", 0, 0, 0, 0},
 {0x70008000, 0xffff8000, "vseq.h", "v0:5,v5:5,v10:5", 0, 0, 0, 0},
 {0x70010000, 0xffff8000, "vseq.w", "v0:5,v5:5,v10:5", 0, 0, 0, 0},
@@ -1530,6 +1580,10 @@ static struct loongarch_opcode loongarch_128vec_opcodes[] = {
 };
 static struct loongarch_opcode loongarch_256vec_opcodes[] = {
 /* match,    mask,       name, format, macro, include, exclude, pinfo */
+{0x769d1400, 0xfffffc00, "xvfrecipe.s", "x0:5,x5:5", 0, 0, 0, 0},
+{0x769d1800, 0xfffffc00, "xvfrecipe.d", "x0:5,x5:5", 0, 0, 0, 0},
+{0x769d2400, 0xfffffc00, "xvfrsqrte.s", "x0:5,x5:5", 0, 0, 0, 0},
+{0x769d2800, 0xfffffc00, "xvfrsqrte.d", "x0:5,x5:5", 0, 0, 0, 0},
 {0x74000000, 0xffff8000, "xvseq.b", "x0:5,x5:5,x10:5", 0, 0, 0, 0},
 {0x74008000, 0xffff8000, "xvseq.h", "x0:5,x5:5,x10:5", 0, 0, 0, 0},
 {0x74010000, 0xffff8000, "xvseq.w", "x0:5,x5:5,x10:5", 0, 0, 0, 0},
