@@ -6,7 +6,6 @@
 /ldemul-list.h
 /ldgram.c
 /ldgram.h
-/ldlex.c
 /stringify.sed
 /tdirs
 
