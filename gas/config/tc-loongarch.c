@@ -162,6 +162,8 @@ md_parse_option (int c, const char *arg)
     case OPTION_ABI:
       if (strcasecmp (arg, "lp64") == 0)
 	LARCH_opts.abi_is_lp64 = 1;
+      if (strcasecmp (arg, "lp64d") == 0)
+  LARCH_opts.abi_is_lp64 = 1;
       else if (strcasecmp (arg, "lp32") == 0)
 	LARCH_opts.abi_is_lp32 = 1;
       else
